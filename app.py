@@ -108,7 +108,17 @@ class GymVideoProcessor(VideoProcessorBase):
 
         return frame.from_ndarray(img, format="bgr24")
 
-# Panggil kamera live di halaman web
-webrtc_streamer(key="gym-tracker-live", video_processor_factory=GymVideoProcessor)
+# Konfigurasi STUN Server dari Google agar bisa tembus jaringan internet HP (Kuota/WiFi)
+RTC_CONFIGURATION = {
+    "iceServers": [{"urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"]}]
+}
+
+# Panggil kamera live di halaman web dengan konfigurasi RTC baru
+webrtc_streamer(
+    key="gym-tracker-live", 
+    video_processor_factory=GymVideoProcessor,
+    rtc_configuration=RTC_CONFIGURATION,
+    media_stream_constraints={"video": True, "audio": False} # Matikan audio agar hemat kuota & gak eror izin mic
+)
 
 st.info("💡 Tips: Angka repetisi dicetak langsung di pojok kiri atas dalam kotak video agar hitungannya responsif dan tidak macet!")
