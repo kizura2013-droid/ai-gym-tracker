@@ -136,5 +136,14 @@ if Mulai:
             
             # Masukkan hasil gambar kamera ke dalam window Streamlit web
             FRAME_WINDOW.image(image)
-    else:
-        st.info("Centang kotak di atas untuk mulai mendeteksi gerakan lewat webcam.")
+   # === SAMBUNGAN KODE PALING BAWAH (Mulai dari baris "if Mulai:") ===
+if Mulai:
+    cap = cv2.VideoCapture(0)
+    with mp_pose.Pose(min_detection_confidence=0.7, min_tracking_confidence=0.7) as pose:
+        while cap.isOpened() and Mulai:
+            # (Semua kode kamera di sini...)
+            FRAME_WINDOW.image(image)
+            
+# --- PASTIKAN DUA BARIS DI BAWAH INI SAKLEK DI POJOK KIRI (SEJAJAR DENGAN 'if Mulai:') ---
+else:
+    st.info("Centang kotak di atas untuk mulai mendeteksi gerakan lewat webcam.")
